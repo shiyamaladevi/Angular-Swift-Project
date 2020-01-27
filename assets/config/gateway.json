@@ -1,0 +1,12 @@
+{
+  "backUrl": "http://127.0.0.1:8080/apigateway/amh",
+  "esBackUrl": "http://127.0.0.1:8080/apigateway/es",
+  "saaBackUrl" : "http://127.0.0.1:8080/apigateway/saa",
+  "simulationBackUrl" : "http://127.0.0.1:8080/apigateway/simulation",
+  "commonBackUrl" : "http://127.0.0.1:8080/apigateway/common",
+  "auditBackUrl" : "http://127.0.0.1:8080/apigateway/audit",
+  "clientImportDir":"c:/demo",
+  "max_instant_messages": 100,
+  "max_instant_messages_alert":101,
+  "stop_marker_active":true
+}

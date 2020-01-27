@@ -1,0 +1,11 @@
+{
+  "backUrl": "http://127.0.0.1:8091",
+  "esBackUrl": "http://127.0.0.1:9200",
+  "saaBackUrl" : "http://127.0.0.1:8090",
+  "simulationBackUrl" : "http://127.0.0.1:8093",
+  "commonBackUrl" : "http://127.0.0.1:8094",
+  "clientImportDir":"c:/demo",
+  "max_instant_messages": 100,
+  "max_instant_messages_alert":101,
+  "stop_marker_active":true
+}

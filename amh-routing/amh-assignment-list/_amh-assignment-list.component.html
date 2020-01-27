@@ -1,0 +1,195 @@
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+        <app-header-secondary [header-menu]="menuConfig"></app-header-secondary>
+        <div class="row">
+            <!--<div class="col-sm-1 col-md-1 col-lg-1"></div>-->
+            <div class="col-sm-12 col-md-12 col-lg-12" >
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="height:45px">
+                    <!--MIG DEL <div class="row col-sm-12 col-md-12 col-lg-12"> -->
+                        <div class ="col-sm-2 col-md-2 col-lg-2" style="padding-right: 0px; text-align:right; font-weight: bold; margin-top:5px;">
+                                Choose your Selection :
+                        </div>
+                            <amh-selection-table class="col-sm-3 col-md-3 col-lg-3" style="padding:0px;" [default-option]="defaultOption" [options]="selectionTables" (tableSelected)="updateSelectionTable($event)">
+                            </amh-selection-table> 
+                        <!-- MIG DEL<div class="col-sm-8 col-md-8 col-lg-8">&nbsp;</div> -->
+                    <!-- </div> -->
+
+                    </div>
+                </div>
+                <!--  section end -->
+            </div>
+            <!--<div class="col-sm-1 col-md-1 col-lg-1"></div>-->
+        </div>
+        <div class="row">
+            <!--<div class="col-sm-1 col-md-1 col-lg-1"></div>-->
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="color:#688a7e;height:45px;">
+                        
+                    <div class="panel-title">
+                            <div class="col-sm-3 col-md-3 col-lg-2" >
+                                    <label>AMH Routing Table </label>
+                            </div>
+                        
+                            <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top: 4px">
+                                <amh-selection-group-selection *ngIf="showSelectionGroup()" style="padding-right:0px;" [search-selection-group]="searchSelectionGroup" [selection-groups]="selectionGroups" (selectionGroupSelected)="selectSelectionGroup($event)">                            
+                                </amh-selection-group-selection>
+                            </div>
+                        <!-- MIG<i [routerLink]=" ['AMHSimulation', { 'st': defaultOption.id }, 'AMHSimulatorComponent'] " class="fa fa-play-circle-o pull-right margin-right image-pointer" aria-hidden="true" style="font-size:2em;margin-top: 7px;"></i> -->
+                        <i [routerLink]=" ['../simulation', { 'st': defaultOption.id }] " class="far fa-play-circle pull-right margin-right image-pointer" aria-hidden="true" style="font-size:2em;margin-top: 7px;"></i>
+
+                        <!--<a target="_blank" href="/assets/pdf/routing.pdf">-->
+                            <!--<i class="fa fa-file-pdf-o pull-right margin-right image-pointer" aria-hidden="true" style="font-size:2em;margin-top: 7px;"></i>-->
+                        <!--</a>-->
+                        <!--<a target="_blank" href="#">-->
+                            <!-- background: linear-gradient(to right,white,green); -webkit-background-clip:text !important; color:transparent -->
+                            <i id="exportAll" data-toggle="tooltip" data-placement="top" title="Export the entire routing" class="fas fa-file-csv pull-right image-pointer" (click)="actionExportCSVFile(true)" style="font-size:2em;margin-top: 7px;"></i>
+                            <i id="exportResultOnly" data-toggle="tooltip" data-placement="top" title="Export the current result" class="fas fa-file-csv pull-right image-pointer" (click)="actionExportCSVFile(false)" style="font-size:2em;margin-top: 7px;"></i>
+                            <!--</a>-->
+                        <!--<span class="menu-arrow" [ngClass]="{'arrow_carrot-down': descriptionGroup?.isOpen, 'arrow_carrot-right': !descriptionGroup?.isOpen}"></span>-->
+                        <!--<i class="fa fa-search pull-right" aria-hidden="true" style="font-size:1.5em; margin:12px 45px 0px 0px;"></i>-->
+                        <form [formGroup]="searchForm" class="pull-right col-sm-3 col-md-3 col-lg-3 col-xl-3" style="margin: 4px 0 0 0;"> 
+                                <div class="input-group" style="margin: 0px;">
+                                    <input type="text" id="searchInput" formControlName="searchInput" autocomplete="off" placeholder="Search..."/>
+                                    <span *ngIf="searchInput.value" class="input-group-addon" id="searchclear" style="height:15px" class="glyphicon glyphicon-remove" (click)="clearSearchInput()"></span>
+                                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true" style="width:auto;"></i></span>
+                                </div>
+                        </form>
+                    </div>
+
+                    </div>
+                    <div class="panel-body">
+                        <table style="table-layout:fixed;width: 100%; word-break:break-all;" class="table table-striped table-bordered table-hover table-condensed table-responsive color-black"
+                         [mfDataOverview]="data" #mf="mfDataTableOverview" [mfRowsOnPage]="10" [mfType]="'amh-routing-overview'">
+
+                         <thead>
+                            
+                                <tr>
+                                    <td *ngIf="defaultOption.id == 1 || (defaultOption.id == 4 && !showSelectionGroup())" colspan="8">
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length>50" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50,100]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=50 && data.length>25" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=25 && data.length>10" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25]"></mfBootstrapPaginatorOverview>
+                                    </td>
+                                    <td *ngIf="defaultOption.id==2 && showSelectionGroup()" colspan="10">
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length>50" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50,100]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=50 && data.length>25" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=25 && data.length>10" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25]"></mfBootstrapPaginatorOverview>
+                                    </td>
+                                    <td *ngIf="(defaultOption.id==2 && !showSelectionGroup()) || (defaultOption.id == 4 && showSelectionGroup())" colspan="9">
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length>50" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50,100]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=50 && data.length>25" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=25 && data.length>10" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25]"></mfBootstrapPaginatorOverview>
+                                    </td>
+                                </tr>
+                                <tr></tr>
+                            
+                                <tr>
+                                    <th style="width: 8%">Action</th>
+                                    <th *ngIf="showSelectionGroup()"style="width: 10%">
+                                        <mfDefaultSorterOverview by="selectionGroup">Selection Group</mfDefaultSorterOverview>
+                                    </th>
+                                    <th style="width: 5%">
+                                        <mfDefaultSorterOverview by="active">Active</mfDefaultSorterOverview>
+                                    </th>
+                                    <th style="width: 7%">
+                                        <mfDefaultSorterOverview by="backSequence">Selection Seq</mfDefaultSorterOverview>
+                                    </th>
+                                    <th style="width: 10%">
+                                        <mfDefaultSorterOverview by="code">Selection Code</mfDefaultSorterOverview>
+                                    </th>
+                                    <th >
+                                        <mfDefaultSorterOverview by="backCode">Backend Channel</mfDefaultSorterOverview>
+                                    </th>
+                                    <th *ngIf="defaultOption.id==2" style="width: 5%; border-right: 3px solid #dddddd;">
+                                        <mfDefaultSorterOverview by="stopFlag">Stop Flag</mfDefaultSorterOverview>
+                                    </th>
+                                    
+                                    <th style="width: 5%">
+                                        <mfDefaultSorterOverview by="ruleSequence">Rule Seq</mfDefaultSorterOverview>
+                                    </th>
+                                    <th style="width: 10%">
+                                        <mfDefaultSorterOverview by="ruleCode">Rule Code</mfDefaultSorterOverview>
+                                    </th>
+                                    <th style="width: 53%">
+                                        <mfDefaultSorterOverview by="ruleExpressions">Rule Expressions</mfDefaultSorterOverview>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of mf.data">
+                                    <td>
+                                        <i *gpIf="['amh.modify.assignment']"  [routerLink]=" ['../assignment/edit', { 'code': item.code, 'st': defaultOption.id,'return_to':'assignment-list'}]" class="fas fa-edit image-pointer" aria-hidden="true" style="font-size:1.5em; margin-right:5px;"></i>
+                                        <i *gpNotIf="['amh.modify.assignment']" class="fas fa-edit result-inactive image-pointer" aria-hidden="true" style="font-size:1.5em; margin-right:5px;"></i>
+                                        <i *gpIf="['amh.modify.assignment']" class="fa fa-times image-pointer" aria-hidden="true" style="font-size:1.5em; margin-right:7px;" (click)="actionDelete(item)"></i>
+                                        <i *gpNotIf="['amh.modify.assignment']" class="fas fa-times result-inactive image-pointer" aria-hidden="true" style="font-size:1.5em; margin-right:5px;"></i>
+                                        <i *gpIf="['amh.modify.assignment']"  [routerLink]=" ['../assignment/clone', { 'code': item.code, 'st': defaultOption.id,'return_to':'assignment-list'}] " class="far fa-clone image-pointer" aria-hidden="true" style="font-size:1.5em;"></i>
+                                        <i *gpNotIf="['amh.modify.assignment']" class="far fa-clone result-inactive image-pointer" aria-hidden="true" style="font-size:1.5em;" ></i>
+                                        
+                                    </td>
+                                    <td *ngIf="showSelectionGroup()">{{item.selectionGroup }}</td>
+                                    <td>
+                                        <span *ngIf="item.active"  class="badge bg-primary">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </span>
+                                        <!--class="badge bg-danger" -->
+                                        <span *ngIf="!item.active" >
+                                            <!--<i class="fa fa-times" aria-hidden="true"></i>-->
+                                            &nbsp;
+                                        </span>
+                                     </td>
+                                    <td>{{item.backSequence}}</td>
+                                    <td *gpIf="['amh.modify.assignment']" class="image-pointer highlight"  (click)="updateScroll();" [routerLink]=" ['../assignment/edit']" [queryParams]= "{ 'code': item.code, 'st': defaultOption.id,'return_to':'assignment-list'} ">{{item.code }}</td> 
+                                    <td class="highlight" *gpNotIf="['amh.modify.assignment']"> {{item.code }}</td>
+                                    <td class="highlight"  [innerHTML]="item.backCode"></td>
+                                    <td *ngIf="defaultOption.id==2" style="border-right: 3px solid #dddddd;">{{item.stopFlag }}</td>
+                                    <td>{{item.ruleSequence}} </td>
+                                    <td *gpIf="['amh.modify.rule']" class="image-pointer highlight" (click)="updateScroll();_sharedAMHRule.updateCode(item.ruleCode)" [routerLink]=" ['../rule'+'/edit']" [queryParams]= "{ 'return_to':'assignment-list', 'params':'code='+item.ruleCode,'st':defaultOption.id} ">{{item.ruleCode }}</td>
+                                    <td class="highlight" *gpNotIf="['amh.modify.assignment']"> {{item.ruleCode }}</td>
+                                    <td class="highlight">{{item.ruleExpressions }}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td *ngIf="defaultOption.id == 1 || (defaultOption.id == 4 && !showSelectionGroup())" colspan="8">
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length>50" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50,100]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=50 && data.length>25" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=25 && data.length>10" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25]"></mfBootstrapPaginatorOverview>
+                                    </td>
+                                    <td *ngIf="defaultOption.id==2 && showSelectionGroup()" colspan="10">
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length>50" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50,100]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=50 && data.length>25" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=25 && data.length>10" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25]"></mfBootstrapPaginatorOverview>
+                                    </td>
+                                    <td *ngIf="(defaultOption.id==2 && !showSelectionGroup()) || (defaultOption.id == 4 && showSelectionGroup())" colspan="9">
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length>50" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50,100]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=50 && data.length>25" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25, 50]"></mfBootstrapPaginatorOverview>
+                                        <mfBootstrapPaginatorOverview *ngIf="data.length<=25 && data.length>10" [mfType]="'amh-routing-overview'" [rowsOnPageSet]="[10,25]"></mfBootstrapPaginatorOverview>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--  section end -->
+            <!--<div class="col-sm-1 col-md-1 col-lg-1"></div>-->
+        </div>
+        <!--/.row-->
+    </section>
+</section>
+<router-outlet></router-outlet>
+
+<!-- <alert (alertOutput)="alertResponse($event)"></alert> -->
+<!--main content end-->
+       <footer class="footer dark-bg">
+           <div class="row">
+               <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="top-nav notification-row pull-right" >
+                    <button class="btn btn-default" (click)="actionCancel()"> Back</button>
+                </div>
+               </div>
+           </div>
+       </footer>

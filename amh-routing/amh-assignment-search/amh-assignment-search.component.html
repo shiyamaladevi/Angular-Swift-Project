@@ -1,0 +1,46 @@
+<!--main content start-->
+<div id="searchComponent">
+    <div class="form-group row" style="margin-bottom:0px">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left:0">
+            <div class="input-group">
+            <input type="text" id="searchInput" autocomplete="off"
+                [(ngModel)]="selectedAssignment.code" 
+                (keyup)="updateAssignments($event.target.value)"  (focus)="updateAssignments($event.target.value)" (blur)="clearSearchResults()"
+            />
+            <span *ngIf="selectedAssignment.code" class="input-group-addon" id="searchclear" class="glyphicon glyphicon-remove" (click)="clearSearchInput()"></span>
+            <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+            </div>
+        </div>
+    </div>
+    <!---->
+    <div style="height:200px; overflow: auto; z-index:200; margin:5px 5px 10px 0px;" class="suggestions" *ngIf="assignments.length > 0">
+        <!--*ngFor="let item of assignments"-->
+        <!--<ul >
+            <li>-->
+                <table style="width:100%;">
+                    <!--<thead>
+                        <tr>
+                            <th style="width:15%;"> </th>
+                            <th style="width:20%;"> </th>
+                            <th style="width:65%;"> </th>
+                        </tr>
+                    </thead>-->
+                    <tbody>
+                        <tr *ngFor="let item of assignments" (mousedown)="selectAssignment(item)"> 
+                            <td style="width:15%;">  
+                                <span *ngIf="item.active"  class="badge bg-primary">
+                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                </span>
+                                <span *ngIf="!item.active" >
+                                    &nbsp;
+                                </span>
+                            </td>
+                            <td style="width:20%;"> <b>{{item.sequence}}</b> </td>
+                            <td style="width:65%;"> {{item.code.toUpperCase()}} </td>
+                        </tr>
+                    </tbody>
+                </table>
+            <!--</li>
+        </ul>-->
+    </div>
+</div>
